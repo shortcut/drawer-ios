@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29161AC22359D8C600B2C564 /* DrawerSnapPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29161AC12359D8C600B2C564 /* DrawerSnapPoint.swift */; };
 		9201657E2355A8FD006D5B51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9201657D2355A8FD006D5B51 /* AppDelegate.swift */; };
 		920165822355A8FD006D5B51 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165812355A8FD006D5B51 /* ViewController.swift */; };
 		920165852355A8FD006D5B51 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 920165832355A8FD006D5B51 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		29161AC12359D8C600B2C564 /* DrawerSnapPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerSnapPoint.swift; sourceTree = "<group>"; };
 		9201657A2355A8FD006D5B51 /* DrawerTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawerTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9201657D2355A8FD006D5B51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		920165812355A8FD006D5B51 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				920165922355CC59006D5B51 /* DrawerPresentationController.swift */,
 				920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */,
 				920165962355CC7D006D5B51 /* DrawerViewController.swift */,
+				29161AC12359D8C600B2C564 /* DrawerSnapPoint.swift */,
 			);
 			path = Drawer;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 				920165992355F811006D5B51 /* SquareSegmentedControl.swift in Sources */,
 				920165972355CC7D006D5B51 /* DrawerViewController.swift in Sources */,
 				9222AE252359B14B00051F06 /* PSPDFTouchForwardingView.swift in Sources */,
+				29161AC22359D8C600B2C564 /* DrawerSnapPoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

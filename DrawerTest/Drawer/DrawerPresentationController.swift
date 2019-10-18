@@ -9,15 +9,30 @@
 import UIKit
 
 class DrawerPresentationController: UIPresentationController {
-    let defaultFraction: CGFloat = 0.15
+    let defaultSnapPoint: DrawerSnapPoint
+    let snapPoints: [DrawerSnapPoint]
 
-    let snapFractions: [CGFloat] = [
-        0,
-        0.15,
-        0.8,
-    ]
-    
-    override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
+    let touchForwardingView = PSPDFTouchForwardingView()
+    var startingLocation: CGPoint = .zero
+    var startingFrame: CGRect = .zero
+    var topConstraint: NSLayoutConstraint?
+    var scrollView: UIScrollView?
+
+    /// Whether we are locked to dragging a drawer
+    var isDragging: Bool = false
+
+    init(presentedViewController: UIViewController,
+         presenting presentingViewController: UIViewController?,
+         defaultSnapPoint: DrawerSnapPoint,
+         disabledSnapPoints: Set<DrawerSnapPoint>) {
+        self.defaultSnapPoint = defaultSnapPoint
+        if disabledSnapPoints.contains(defaultSnapPoint) {
+            assertionFailure("The default snap point can't be a disabled snap point")
+        }
+        if disabledSnapPoints == Set(DrawerSnapPoint.allCases) {
+            assertionFailure("You can't disable all snap points")
+        }
+        self.snapPoints = DrawerSnapPoint.allCases.filter { !disabledSnapPoints.contains($0) }
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
 
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panned))
@@ -25,13 +40,33 @@ class DrawerPresentationController: UIPresentationController {
         presentedViewController.view.addGestureRecognizer(panGesture)
     }
 
-    let touchForwardingView = PSPDFTouchForwardingView()
-    var startingLocation: CGPoint = .zero
-    var startingFrame: CGRect = .zero
-    var scrollView: UIScrollView?
+    override func containerViewDidLayoutSubviews() {
+        super.containerViewDidLayoutSubviews()
 
-    /// Whether we are locked to dragging a drawer
-    var isDragging: Bool = false
+        guard topConstraint == nil else { return }
+
+        guard
+            let containerView = containerView,
+            let presentedView = presentedView
+            else {
+                assertionFailure()
+                return
+        }
+
+        presentedView.translatesAutoresizingMaskIntoConstraints = false
+
+        let topConstraint = presentedView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor)
+        topConstraint.constant = defaultSnapPoint.topMargin(containerHeight: containerView.bounds.height)
+
+        NSLayoutConstraint.activate([
+            topConstraint,
+            presentedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            presentedView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            presentedView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+        ])
+
+        self.topConstraint = topConstraint
+    }
 
     func adjustScrollViewContentOffset() {
         guard let scrollView = scrollView else { return }
@@ -41,7 +76,8 @@ class DrawerPresentationController: UIPresentationController {
     @objc func panned(_ gesture: UIPanGestureRecognizer) {
         guard
             let containerView = containerView,
-            let presentedView = presentedView
+            let presentedView = presentedView,
+            let topConstraint = topConstraint
             else {
                 assertionFailure()
                 return
@@ -95,16 +131,14 @@ class DrawerPresentationController: UIPresentationController {
             }
 
             if isDragging {
-                let rect = CGRect(
-                    x: 0, y: locationY,
-                    width: startingFrame.size.width, height: containerView.bounds.height - locationY)
-                presentedView.frame = rect
+                topConstraint.constant = locationY
+                presentedView.layoutIfNeeded()
             }
 
         case .ended:
             if isDragging {
                 let presentedViewMinY = presentedView.frame.minY
-                let snapLocations = snapFractions.map { containerView.bounds.height * $0 }
+                let snapLocations = snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
                 let snapDistances = snapLocations.map { abs($0 - presentedViewMinY) }
                     .enumerated()
                     .sorted { (a, b) -> Bool in
@@ -112,11 +146,16 @@ class DrawerPresentationController: UIPresentationController {
                 }
 
                 let snapIndex = snapDistances.first?.offset ?? 0
-                let snapTargetY = snapFractions[snapIndex] * containerView.bounds.height
-                let snapTargetFrame = CGRect(x: 0, y: snapTargetY, width: containerView.bounds.width, height: containerView.bounds.height - snapTargetY)
+                let snapTargetY = snapPoints[snapIndex].topMargin(containerHeight: containerView.bounds.height)
 
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-                    presentedView.frame = snapTargetFrame
+                UIView.animate(withDuration: 0.5,
+                               delay: 0,
+                               usingSpringWithDamping: 0.7,
+                               initialSpringVelocity: 0.5,
+                               options: .curveEaseInOut,
+                               animations: {
+                    topConstraint.constant = snapTargetY
+                    presentedView.layoutIfNeeded()
                 })
             }
 
@@ -133,7 +172,7 @@ class DrawerPresentationController: UIPresentationController {
             return .zero
         }
         let containerRect = containerView.bounds
-        let height = containerRect.height * (1 - defaultFraction)
+        let height = defaultSnapPoint.drawerHeight(containerHeight: containerRect.height)
         return CGRect(x: 0, y: containerRect.maxY - height,
                       width: containerRect.width, height: height)
     }

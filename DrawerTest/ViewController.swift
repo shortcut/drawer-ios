@@ -161,7 +161,7 @@ class ViewController: UIViewController {
 
   @objc func makeDrawerWithStaticView() {
     let drawerVC = DrawerViewController(viewController: StaticViewController())
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate()
+    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoint: .bottom)
     drawerVC.modalPresentationStyle = .custom
     drawerVC.transitioningDelegate = drawerTransitioningDelegate
     present(drawerVC, animated: true)
