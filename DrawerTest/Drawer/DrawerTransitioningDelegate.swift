@@ -9,10 +9,10 @@
 import UIKit
 
 class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
-  func presentationController(
-    forPresented presented: UIViewController,
-    presenting: UIViewController?,
-    source: UIViewController) -> UIPresentationController? {
-    return DrawerPresentationController(presentedViewController: presented, presenting: presenting)
-  }
+    func presentationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController?,
+        source: UIViewController) -> UIPresentationController? {
+        return DrawerPresentationController(presentedViewController: presented, presenting: presenting)
+    }
 }

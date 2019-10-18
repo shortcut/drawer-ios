@@ -17,6 +17,7 @@
 		920165952355CC6B006D5B51 /* DrawerTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */; };
 		920165972355CC7D006D5B51 /* DrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165962355CC7D006D5B51 /* DrawerViewController.swift */; };
 		920165992355F811006D5B51 /* SquareSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165982355F811006D5B51 /* SquareSegmentedControl.swift */; };
+		9222AE252359B14B00051F06 /* PSPDFTouchForwardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerTransitioningDelegate.swift; sourceTree = "<group>"; };
 		920165962355CC7D006D5B51 /* DrawerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerViewController.swift; sourceTree = "<group>"; };
 		920165982355F811006D5B51 /* SquareSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareSegmentedControl.swift; sourceTree = "<group>"; };
+		9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSPDFTouchForwardingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 		920165912355CC4B006D5B51 /* Drawer */ = {
 			isa = PBXGroup;
 			children = (
+				9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */,
 				920165922355CC59006D5B51 /* DrawerPresentationController.swift */,
 				920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */,
 				920165962355CC7D006D5B51 /* DrawerViewController.swift */,
@@ -165,6 +168,7 @@
 				920165802355A8FD006D5B51 /* SceneDelegate.swift in Sources */,
 				920165992355F811006D5B51 /* SquareSegmentedControl.swift in Sources */,
 				920165972355CC7D006D5B51 /* DrawerViewController.swift in Sources */,
+				9222AE252359B14B00051F06 /* PSPDFTouchForwardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
