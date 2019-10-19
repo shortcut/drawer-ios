@@ -135,7 +135,7 @@ class DrawerPresentationController: UIPresentationController {
 
             if isDragging {
                 topConstraint.constant = locationY
-                presentedView.layoutIfNeeded()
+                containerView.layoutIfNeeded()
             }
 
         case .ended:
@@ -159,7 +159,7 @@ class DrawerPresentationController: UIPresentationController {
                                options: .curveEaseInOut,
                                animations: {
                     topConstraint.constant = snapTargetY
-                    presentedView.layoutIfNeeded()
+                    containerView.layoutIfNeeded()
                 }, completion: { _ in
                     if case .dismiss = snapPoint {
                         self.presentedViewController.dismiss(animated: false, completion: nil)
