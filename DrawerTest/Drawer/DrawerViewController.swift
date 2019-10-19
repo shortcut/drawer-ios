@@ -35,6 +35,7 @@ class DrawerViewController: UIViewController {
 
     private func setup() {
         view.clipsToBounds = true
+        view.backgroundColor = .clear
         view.layer.cornerRadius = 10
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 
@@ -69,7 +70,7 @@ class DrawerViewController: UIViewController {
             viewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             viewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             viewController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            viewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            viewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
 
         view.bringSubviewToFront(dragIndicatorView)

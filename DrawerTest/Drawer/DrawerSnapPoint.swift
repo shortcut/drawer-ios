@@ -12,6 +12,9 @@ enum DrawerSnapPoint: CaseIterable {
     case top
     case middle
     case bottom
+    /// Dragging the drawer to this snap point will
+    /// cause it to be dismissed
+    case dismiss
 
     /// The constant/length of the constraint between the top of the drawer view
     /// and the top of the container view safe area.
@@ -22,7 +25,9 @@ enum DrawerSnapPoint: CaseIterable {
         case .middle:
             return height * 0.5
         case .bottom:
-            return height - 120
+            return height - 140
+        case .dismiss:
+            return height
         }
     }
 

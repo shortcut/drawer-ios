@@ -58,9 +58,12 @@ class DrawerPresentationController: UIPresentationController {
         let topConstraint = presentedView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor)
         topConstraint.constant = defaultSnapPoint.topMargin(containerHeight: containerView.bounds.height)
 
+        let bottomConstraint = presentedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        bottomConstraint.priority = .defaultHigh
+
         NSLayoutConstraint.activate([
             topConstraint,
-            presentedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            bottomConstraint,
             presentedView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             presentedView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
         ])
@@ -146,7 +149,8 @@ class DrawerPresentationController: UIPresentationController {
                 }
 
                 let snapIndex = snapDistances.first?.offset ?? 0
-                let snapTargetY = snapPoints[snapIndex].topMargin(containerHeight: containerView.bounds.height)
+                let snapPoint = snapPoints[snapIndex]
+                let snapTargetY = snapPoint.topMargin(containerHeight: containerView.bounds.height)
 
                 UIView.animate(withDuration: 0.5,
                                delay: 0,
@@ -156,6 +160,10 @@ class DrawerPresentationController: UIPresentationController {
                                animations: {
                     topConstraint.constant = snapTargetY
                     presentedView.layoutIfNeeded()
+                }, completion: { _ in
+                    if case .dismiss = snapPoint {
+                        self.presentedViewController.dismiss(animated: false, completion: nil)
+                    }
                 })
             }
 

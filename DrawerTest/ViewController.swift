@@ -32,7 +32,9 @@ class TableViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
+    view.backgroundColor = .clear
+
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(segmentedControl)
     NSLayoutConstraint.activate([
@@ -57,12 +59,14 @@ class TableViewController: UIViewController {
     segmentedControl.setDividerImage(grayImage, forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
 
     tableView.translatesAutoresizingMaskIntoConstraints = false
+    let bottomConstraint = tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    bottomConstraint.priority = .defaultHigh
     view.addSubview(tableView)
     NSLayoutConstraint.activate([
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
-      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      bottomConstraint,
     ])
     tableView.backgroundColor = .white
     tableView.register(DummyTableViewCell.self, forCellReuseIdentifier: DummyTableViewCell.identifier)
@@ -161,7 +165,7 @@ class ViewController: UIViewController {
 
   @objc func makeDrawerWithStaticView() {
     let drawerVC = DrawerViewController(viewController: StaticViewController())
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoint: .bottom)
+    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoint: .top)
     drawerVC.modalPresentationStyle = .custom
     drawerVC.transitioningDelegate = drawerTransitioningDelegate
     present(drawerVC, animated: true)
@@ -180,7 +184,7 @@ class ViewController: UIViewController {
     navigationVC.pushViewController(t2, animated: false)
 
     let drawerVC = DrawerViewController(viewController: navigationVC)
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate()
+    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoint: .top)
     drawerVC.modalPresentationStyle = .custom
     drawerVC.transitioningDelegate = drawerTransitioningDelegate
     present(drawerVC, animated: true)
@@ -197,10 +201,9 @@ class ViewController: UIViewController {
     navigationVC.pushViewController(t2, animated: false)
 
     let drawerVC = DrawerViewController(viewController: navigationVC)
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate()
+    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoint: .top)
     drawerVC.modalPresentationStyle = .custom
     drawerVC.transitioningDelegate = drawerTransitioningDelegate
     present(drawerVC, animated: true)
   }
 }
-
