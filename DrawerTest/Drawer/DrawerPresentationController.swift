@@ -142,10 +142,7 @@ class DrawerPresentationController: UIPresentationController {
 
         case .ended:
             if isDragging {
-                let presentedViewMinY = presentedView.frame.minY
                 let verticalVelocity = gesture.velocity(in: containerView).y
-                let snapLocations = snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
-
                 let snapPoint: DrawerSnapPoint
 
                 if abs(verticalVelocity) > 1000 {
@@ -157,6 +154,8 @@ class DrawerPresentationController: UIPresentationController {
                         snapPoint = currentSnapPoint.down
                     }
                 } else {
+                    let presentedViewMinY = presentedView.frame.minY
+                    let snapLocations = snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
                     let snapDistances = snapLocations.map { abs($0 - presentedViewMinY) }
                         .enumerated()
                         .sorted { (a, b) -> Bool in
