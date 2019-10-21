@@ -35,6 +35,7 @@ class DrawerViewController: UIViewController {
 
     private func setup() {
         view.clipsToBounds = true
+        view.backgroundColor = .clear
         view.layer.cornerRadius = 10
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 
