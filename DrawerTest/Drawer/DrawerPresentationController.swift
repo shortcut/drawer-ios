@@ -11,6 +11,7 @@ import UIKit
 class DrawerPresentationController: UIPresentationController {
     let defaultSnapPoint: DrawerSnapPoint
     let snapPoints: [DrawerSnapPoint]
+    var currentSnapPoint: DrawerSnapPoint
 
     let touchForwardingView = PSPDFTouchForwardingView()
     var startingLocation: CGPoint = .zero
@@ -33,6 +34,7 @@ class DrawerPresentationController: UIPresentationController {
             assertionFailure("You can't disable all snap points")
         }
         self.snapPoints = DrawerSnapPoint.allCases.filter { !disabledSnapPoints.contains($0) }
+        self.currentSnapPoint = defaultSnapPoint
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
 
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panned))
@@ -141,16 +143,32 @@ class DrawerPresentationController: UIPresentationController {
         case .ended:
             if isDragging {
                 let presentedViewMinY = presentedView.frame.minY
+                let verticalVelocity = gesture.velocity(in: containerView).y
                 let snapLocations = snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
-                let snapDistances = snapLocations.map { abs($0 - presentedViewMinY) }
-                    .enumerated()
-                    .sorted { (a, b) -> Bool in
-                        a.element < b.element
+
+                let snapPoint: DrawerSnapPoint
+
+                if abs(verticalVelocity) > 1000 {
+                    if verticalVelocity < 0 {
+                        // flicking upward
+                        snapPoint = currentSnapPoint.up
+                    } else {
+                        // flicking downward
+                        snapPoint = currentSnapPoint.down
+                    }
+                } else {
+                    let snapDistances = snapLocations.map { abs($0 - presentedViewMinY) }
+                        .enumerated()
+                        .sorted { (a, b) -> Bool in
+                            a.element < b.element
+                    }
+                    let snapIndex = snapDistances.first?.offset ?? 0
+                    snapPoint = snapPoints[snapIndex]
                 }
 
-                let snapIndex = snapDistances.first?.offset ?? 0
-                let snapPoint = snapPoints[snapIndex]
                 let snapTargetY = snapPoint.topMargin(containerHeight: containerView.bounds.height)
+
+                self.currentSnapPoint = snapPoint
 
                 UIView.animate(withDuration: 0.5,
                                delay: 0,
