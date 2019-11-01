@@ -17,6 +17,8 @@
 		920165952355CC6B006D5B51 /* DrawerTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */; };
 		920165972355CC7D006D5B51 /* DrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165962355CC7D006D5B51 /* DrawerViewController.swift */; };
 		920165992355F811006D5B51 /* SquareSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165982355F811006D5B51 /* SquareSegmentedControl.swift */; };
+		921E2206236C2BED00B1C1FA /* StaticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921E2204236C2BED00B1C1FA /* StaticViewController.swift */; };
+		921E2207236C2BED00B1C1FA /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921E2205236C2BED00B1C1FA /* TableViewController.swift */; };
 		9222AE252359B14B00051F06 /* PSPDFTouchForwardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +35,8 @@
 		920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerTransitioningDelegate.swift; sourceTree = "<group>"; };
 		920165962355CC7D006D5B51 /* DrawerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerViewController.swift; sourceTree = "<group>"; };
 		920165982355F811006D5B51 /* SquareSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareSegmentedControl.swift; sourceTree = "<group>"; };
+		921E2204236C2BED00B1C1FA /* StaticViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticViewController.swift; sourceTree = "<group>"; };
+		921E2205236C2BED00B1C1FA /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSPDFTouchForwardingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,14 +70,16 @@
 		9201657C2355A8FD006D5B51 /* DrawerTest */ = {
 			isa = PBXGroup;
 			children = (
-				920165912355CC4B006D5B51 /* Drawer */,
 				9201657D2355A8FD006D5B51 /* AppDelegate.swift */,
-				920165812355A8FD006D5B51 /* ViewController.swift */,
-				920165832355A8FD006D5B51 /* Main.storyboard */,
 				920165862355A900006D5B51 /* Assets.xcassets */,
-				920165882355A900006D5B51 /* LaunchScreen.storyboard */,
+				920165912355CC4B006D5B51 /* Drawer */,
 				9201658B2355A900006D5B51 /* Info.plist */,
+				920165882355A900006D5B51 /* LaunchScreen.storyboard */,
+				920165832355A8FD006D5B51 /* Main.storyboard */,
 				920165982355F811006D5B51 /* SquareSegmentedControl.swift */,
+				921E2204236C2BED00B1C1FA /* StaticViewController.swift */,
+				921E2205236C2BED00B1C1FA /* TableViewController.swift */,
+				920165812355A8FD006D5B51 /* ViewController.swift */,
 			);
 			path = DrawerTest;
 			sourceTree = "<group>";
@@ -164,7 +170,9 @@
 				920165952355CC6B006D5B51 /* DrawerTransitioningDelegate.swift in Sources */,
 				920165822355A8FD006D5B51 /* ViewController.swift in Sources */,
 				9201657E2355A8FD006D5B51 /* AppDelegate.swift in Sources */,
+				921E2207236C2BED00B1C1FA /* TableViewController.swift in Sources */,
 				920165932355CC59006D5B51 /* DrawerPresentationController.swift in Sources */,
+				921E2206236C2BED00B1C1FA /* StaticViewController.swift in Sources */,
 				920165992355F811006D5B51 /* SquareSegmentedControl.swift in Sources */,
 				920165972355CC7D006D5B51 /* DrawerViewController.swift in Sources */,
 				9222AE252359B14B00051F06 /* PSPDFTouchForwardingView.swift in Sources */,
