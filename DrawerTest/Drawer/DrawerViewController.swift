@@ -17,7 +17,12 @@ class DrawerViewController: UIViewController {
         return view
     }()
 
-    var viewController: UIViewController?
+    /// The view controller to be presented inside the drawer.
+    private(set) var viewController: UIViewController?
+
+    /// Specifies whether touching outside of the drawer bounds should
+    /// forward touch events to the view controller in the background.
+    var shouldAllowTouchPassthrough: Bool = false
 
     init(viewController: UIViewController? = nil) {
         self.viewController = viewController
@@ -53,6 +58,7 @@ class DrawerViewController: UIViewController {
         }
     }
 
+    /// Set the view controller that is presented inside the drawer.
     func setViewController(_ viewController: UIViewController) {
         self.viewController?.willMove(toParent: nil)
         self.viewController?.view.removeFromSuperview()

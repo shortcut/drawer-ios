@@ -231,8 +231,12 @@ class DrawerPresentationController: UIPresentationController {
         }
 
         touchForwardingView.frame = containerView.bounds
-        touchForwardingView.passthroughViews = [presentingViewController.view]
         containerView.insertSubview(touchForwardingView, at: 0)
+
+        let drawerViewController = presentedViewController as? DrawerViewController
+        if drawerViewController?.shouldAllowTouchPassthrough ?? false {
+            touchForwardingView.passthroughViews = [presentingViewController.view]
+        }
     }
 }
 
