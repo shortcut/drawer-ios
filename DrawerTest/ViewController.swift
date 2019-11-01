@@ -64,7 +64,7 @@ class ViewController: UIViewController {
 
   @objc func makeDrawerWithStaticView() {
     let drawerVC = DrawerViewController(viewController: StaticViewController())
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoint: .top)
+    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoints: [.top, .dismiss])
     drawerVC.modalPresentationStyle = .custom
     drawerVC.transitioningDelegate = drawerTransitioningDelegate
     present(drawerVC, animated: true)
@@ -83,7 +83,7 @@ class ViewController: UIViewController {
     navigationVC.pushViewController(t2, animated: false)
 
     let drawerVC = DrawerViewController(viewController: navigationVC)
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoint: .top)
+    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoints: [.top, .middle, .dismiss])
     drawerVC.modalPresentationStyle = .custom
     drawerVC.transitioningDelegate = drawerTransitioningDelegate
     present(drawerVC, animated: true)
@@ -100,7 +100,7 @@ class ViewController: UIViewController {
     navigationVC.pushViewController(t2, animated: false)
 
     let drawerVC = DrawerViewController(viewController: navigationVC)
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoint: .top)
+    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoints: [.top, .middle, .bottom])
     drawerVC.modalPresentationStyle = .custom
     drawerVC.transitioningDelegate = drawerTransitioningDelegate
     present(drawerVC, animated: true)

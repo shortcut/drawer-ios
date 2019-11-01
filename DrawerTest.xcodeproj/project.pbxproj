@@ -87,11 +87,11 @@
 		920165912355CC4B006D5B51 /* Drawer */ = {
 			isa = PBXGroup;
 			children = (
-				9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */,
 				920165922355CC59006D5B51 /* DrawerPresentationController.swift */,
+				29161AC12359D8C600B2C564 /* DrawerSnapPoint.swift */,
 				920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */,
 				920165962355CC7D006D5B51 /* DrawerViewController.swift */,
-				29161AC12359D8C600B2C564 /* DrawerSnapPoint.swift */,
+				9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */,
 			);
 			path = Drawer;
 			sourceTree = "<group>";

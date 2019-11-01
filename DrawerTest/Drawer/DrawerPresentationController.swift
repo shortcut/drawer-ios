@@ -22,19 +22,14 @@ class DrawerPresentationController: UIPresentationController {
     /// Whether we are locked to dragging a drawer
     var isDragging: Bool = false
 
-    init(presentedViewController: UIViewController,
+    init(presentedViewController: DrawerViewController,
          presenting presentingViewController: UIViewController?,
-         defaultSnapPoint: DrawerSnapPoint,
-         disabledSnapPoints: Set<DrawerSnapPoint>) {
-        self.defaultSnapPoint = defaultSnapPoint
-        if disabledSnapPoints.contains(defaultSnapPoint) {
-            assertionFailure("The default snap point can't be a disabled snap point")
-        }
-        if disabledSnapPoints == Set(DrawerSnapPoint.allCases) {
-            assertionFailure("You can't disable all snap points")
-        }
-        self.snapPoints = DrawerSnapPoint.allCases.filter { !disabledSnapPoints.contains($0) }
-        self.currentSnapPoint = defaultSnapPoint
+         snapPoints: [DrawerSnapPoint],
+         defaultSnapPoint: DrawerSnapPoint? = nil) {
+        self.snapPoints = snapPoints
+        self.defaultSnapPoint = defaultSnapPoint ?? snapPoints.first ?? .middle
+        self.currentSnapPoint = self.defaultSnapPoint
+
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
 
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panned))
@@ -145,15 +140,40 @@ class DrawerPresentationController: UIPresentationController {
                 let verticalVelocity = gesture.velocity(in: containerView).y
                 let snapPoint: DrawerSnapPoint
 
-                if abs(verticalVelocity) > 1000 {
-                    if verticalVelocity < 0 {
-                        // flicking upward
-                        snapPoint = currentSnapPoint.up
+                if abs(verticalVelocity) > 400 {
+                    let isFlickingUp = verticalVelocity < 0
+
+                    // find the nearest snap point that is
+                    //  a) vertically higher (when flicking up)
+                    //  b) vertically lower (when flicking down)
+                    // than the current position
+                    let presentedViewMinY = presentedView.frame.minY
+                    let snapLocations = snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
+                    let snapDistances = snapLocations
+                        .enumerated()
+                        .sorted { (a, b) -> Bool in
+                            a.element < b.element
+                    }
+
+                    let maybeSnapIndex: Int? = {
+                        if isFlickingUp {
+                            return snapDistances
+                                .filter { $0.element < presentedViewMinY }
+                                .last?.offset
+                        } else {
+                            return snapDistances
+                                .filter { $0.element > presentedViewMinY }
+                                .first?.offset
+                        }
+                    }()
+
+                    if let snapIndex = maybeSnapIndex {
+                        snapPoint = snapPoints[snapIndex]
                     } else {
-                        // flicking downward
-                        snapPoint = currentSnapPoint.down
+                        snapPoint = currentSnapPoint
                     }
                 } else {
+                    // find the closest snap point to the current position
                     let presentedViewMinY = presentedView.frame.minY
                     let snapLocations = snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
                     let snapDistances = snapLocations.map { abs($0 - presentedViewMinY) }
