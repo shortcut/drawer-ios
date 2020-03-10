@@ -9,16 +9,14 @@
 import UIKit
 
 class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
-    var snapPoints: [DrawerSnapPoint] = []
-    var defaultSnapPoint: DrawerSnapPoint?
+    var configuration: DrawerConfiguration = DrawerConfiguration()
 
     override init() {
         super.init()
     }
-
-    init(snapPoints: [DrawerSnapPoint], defaultSnapPoint: DrawerSnapPoint? = nil) {
-        self.snapPoints = snapPoints
-        self.defaultSnapPoint = defaultSnapPoint
+    
+    init(configuration: DrawerConfiguration) {
+        self.configuration = configuration
         super.init()
     }
 
@@ -31,7 +29,15 @@ class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelega
         }
         return DrawerPresentationController(presentedViewController: drawerVC,
                                             presenting: presenting,
-                                            snapPoints: snapPoints,
-                                            defaultSnapPoint: defaultSnapPoint)
+                                            snapPoints: configuration.snapPoints,
+                                            defaultSnapPoint: configuration.defaultSnapPoint)
     }
+    
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        DrawerAnimatedTransitioning.Dismission()
+//    }
+//    
+//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        DrawerAnimatedTransitioning.Presentation()
+//    }
 }

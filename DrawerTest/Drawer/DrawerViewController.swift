@@ -8,6 +8,16 @@
 
 import UIKit
 
+protocol DrawerViewControllerDelegate: class {
+    func drawerViewController(_ viewController: DrawerViewController, didScrollTopTo yPoint: CGFloat)
+    func drawerViewController(_ viewController: DrawerViewController, didSnapTo point: DrawerSnapPoint)
+    
+    func drawerViewControllerWillShow(_ viewController: DrawerViewController)
+    func drawerViewControllerDidShow(_ viewController: DrawerViewController)
+    func drawerViewControllerWillDismiss(_ viewController: DrawerViewController)
+    func drawerViewControllerDidDismiss(_ viewController: DrawerViewController)
+}
+
 class DrawerViewController: UIViewController {
     let dragIndicatorView: UIView = {
         let view = UIView()
@@ -16,17 +26,35 @@ class DrawerViewController: UIViewController {
         view.layer.cornerRadius = 3
         return view
     }()
-
+    
+    override var modalPresentationStyle: UIModalPresentationStyle {
+        get {.custom }
+        set { }
+    }
+    
     /// The view controller to be presented inside the drawer.
     private(set) var viewController: UIViewController?
 
+    var drawerTransitioningDelegate: DrawerTransitioningDelegate?
+    
+    weak var delegate: DrawerViewControllerDelegate?
+    
     /// Specifies whether touching outside of the drawer bounds should
     /// forward touch events to the view controller in the background.
     var shouldAllowTouchPassthrough: Bool = false
 
-    init(viewController: UIViewController? = nil) {
+    init(viewController: UIViewController? = nil,
+         configuration: DrawerConfiguration = DrawerConfiguration()) {
+        
         self.viewController = viewController
+        
+        // need to keep a reference to the delegate
+        self.drawerTransitioningDelegate = DrawerTransitioningDelegate(configuration: configuration)
+        
+        shouldAllowTouchPassthrough = configuration.shouldAllowTouchPassthrough
+        
         super.init(nibName: nil, bundle: nil)
+        self.transitioningDelegate = drawerTransitioningDelegate
     }
 
     required init?(coder: NSCoder) {
