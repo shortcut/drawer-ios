@@ -17,7 +17,11 @@ class DrawerPresentationController: UIPresentationController {
     let touchForwardingView = PSPDFTouchForwardingView()
     var startingLocation: CGPoint = .zero
     var startingFrame: CGRect = .zero
-    var topConstraint: NSLayoutConstraint?
+    var drawerY: CGFloat {
+        set { presentedView?.frame.origin.y = newValue }
+        get { presentedView?.frame.origin.y ?? CGFloat.greatestFiniteMagnitude }
+    }
+    
     var scrollView: UIScrollView?
     var currentAnimator: UIViewPropertyAnimator?
     
@@ -46,8 +50,6 @@ class DrawerPresentationController: UIPresentationController {
     override func containerViewDidLayoutSubviews() {
         super.containerViewDidLayoutSubviews()
 
-        guard topConstraint == nil else { return }
-
         guard
             let containerView = containerView,
             let presentedView = presentedView
@@ -56,22 +58,8 @@ class DrawerPresentationController: UIPresentationController {
                 return
         }
 
-        presentedView.translatesAutoresizingMaskIntoConstraints = false
-
-        let topConstraint = presentedView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor)
-        topConstraint.constant = defaultSnapPoint.topMargin(containerHeight: containerView.bounds.height)
-        
-        let bottomConstraint = presentedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-        bottomConstraint.priority = .defaultHigh
-
-        NSLayoutConstraint.activate([
-            topConstraint,
-            bottomConstraint,
-            presentedView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            presentedView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-        ])
-
-        self.topConstraint = topConstraint
+        presentedView.frame = containerView.bounds
+        drawerY = defaultSnapPoint.topMargin(containerHeight: containerView.bounds.height)
     }
 
     func adjustScrollViewContentOffset() {
@@ -82,8 +70,7 @@ class DrawerPresentationController: UIPresentationController {
     @objc func panned(_ gesture: UIPanGestureRecognizer) {
         guard
             let containerView = containerView,
-            let presentedView = presentedView,
-            let topConstraint = topConstraint
+            let presentedView = presentedView
             else {
                 assertionFailure()
                 return
@@ -115,7 +102,7 @@ class DrawerPresentationController: UIPresentationController {
         case .changed:
 
             let distance = location.y - startingLocation.y
-            let locationY = max(0, startingFrame.origin.y + distance - containerView.safeAreaInsets.top)
+            let locationY = max(0, startingFrame.origin.y + distance)
 
             let shouldBeginDragging: Bool = {
                 guard let scrollView = scrollView else {
@@ -142,7 +129,7 @@ class DrawerPresentationController: UIPresentationController {
             if isDragging {
                 self.drawerDelegate?.drawerViewController(self.drawerViewController,
                                                           didScrollTopTo: locationY)
-                topConstraint.constant = locationY
+                drawerY = locationY
                 containerView.layoutIfNeeded()
             }
         case .ended:
@@ -203,7 +190,7 @@ class DrawerPresentationController: UIPresentationController {
                 currentAnimator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.8) {
                     self.drawerDelegate?.drawerViewController(self.drawerViewController,
                                                               didScrollTopTo: snapTargetY)
-                    topConstraint.constant = snapTargetY
+                    self.drawerY = snapTargetY
                     containerView.layoutIfNeeded()
                 }
                 currentAnimator?.addCompletion { _ in
@@ -213,7 +200,6 @@ class DrawerPresentationController: UIPresentationController {
                         self.presentedViewController.dismiss(animated: false, completion: nil)
                     }
                 }
-//                currentAnimator?.addAnimations()
                 currentAnimator?.startAnimation()
             }
 
@@ -247,7 +233,7 @@ class DrawerPresentationController: UIPresentationController {
         containerView.insertSubview(touchForwardingView, at: 0)
 
         let drawerViewController = presentedViewController as? DrawerViewController
-        if drawerViewController?.shouldAllowTouchPassthrough ?? false {
+        if drawerViewController?.configuration.shouldAllowTouchPassthrough ?? false {
             touchForwardingView.passthroughViews = [presentingViewController.view]
         }
         
@@ -260,7 +246,7 @@ class DrawerPresentationController: UIPresentationController {
         }
 
         coordinator.animate(alongsideTransition: { _ in
-            self.drawerDelegate?.drawerViewController(self.drawerViewController, didScrollTopTo: self.topConstraint?.constant ?? 0)
+            self.drawerDelegate?.drawerViewController(self.drawerViewController, didScrollTopTo: self.drawerY)
         })
     }
     

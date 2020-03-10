@@ -76,7 +76,7 @@ class ViewController: UIViewController {
                                                   .fraction(value: 0.7),
                                                   .fraction(value: 0.2),
                                                   .dismiss],
-                                     defaultSnapPoint: .fraction(value: 0.2), shouldAllowTouchPassthrough: true)
+                                     defaultSnapPoint: .fraction(value: 0.7), shouldAllowTouchPassthrough: true)
     
     let drawerVC = DrawerViewController(viewController: StaticViewController(),
                                         configuration: config)
@@ -95,11 +95,15 @@ class ViewController: UIViewController {
     
     let navigationVC = UINavigationController(rootViewController: t1)
     navigationVC.pushViewController(t2, animated: false)
+    let config = DrawerConfiguration(snapPoints: [.top,
+                                                  .fraction(value: 0.7),
+                                                  .fraction(value: 0.2),
+                                                  .dismiss],
+                                     defaultSnapPoint: .fraction(value: 0.7), shouldAllowTouchPassthrough: true)
+    
 
-    let drawerVC = DrawerViewController(viewController: navigationVC)
-//    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoints: [.top, .middle, .dismiss])
-//    drawerVC.transitioningDelegate = drawerTransitioningDelegate
-//    present(drawerVC, animated: true)
+    let drawerVC = DrawerViewController(viewController: navigationVC, configuration: config)
+    present(drawerVC, animated: true)
   }
 
   @objc func makeDrawerWithScrollView() {
@@ -112,10 +116,15 @@ class ViewController: UIViewController {
     let navigationVC = UINavigationController(rootViewController: t1)
     navigationVC.pushViewController(t2, animated: false)
 
-    let drawerVC = DrawerViewController(viewController: navigationVC)
-//    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoints: [.top, .middle, .bottom])
-//    drawerVC.transitioningDelegate = drawerTransitioningDelegate
-//    present(drawerVC, animated: true)
+    let config = DrawerConfiguration(snapPoints: [.top,
+                                                  .fraction(value: 0.7),
+                                                  .fraction(value: 0.2),
+                                                  .dismiss],
+                                     defaultSnapPoint: .fraction(value: 0.7), shouldAllowTouchPassthrough: true)
+
+    let drawerVC = DrawerViewController(viewController: navigationVC, configuration: config)
+    drawerVC.delegate = self
+    present(drawerVC, animated: true)
   }
 }
 
@@ -129,6 +138,7 @@ extension ViewController: DrawerViewControllerDelegate {
         print(point)
     }
     
+    // not implemented yet
     func drawerViewControllerWillShow(_ viewController: DrawerViewController) {
         
     }
@@ -144,6 +154,4 @@ extension ViewController: DrawerViewControllerDelegate {
     func drawerViewControllerDidDismiss(_ viewController: DrawerViewController) {
         
     }
-    
-    
 }

@@ -11,47 +11,25 @@ import UIKit
 struct DrawerAnimatedTransitioning {
     
     class Presentation: NSObject, UIViewControllerAnimatedTransitioning {
-//            
-//        func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
-//            
-//            let animator = UIViewPropertyAnimator(duration: transitionDuration(using: transitionContext), dampingRatio: 0.8) {
-//
-//                
-//            }
-//            animator.addCompletion { position in
-//                transitionContext.completeTransition(.end == position)
-//            }
-//            
-//            return animator
-//            UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.8) {
-//                self.drawerDelegate?.drawerViewController(self.drawerViewController,
-//                                                          didScrollTopTo: snapTargetY)
-//                topConstraint.constant = snapTargetY
-//                containerView.layoutIfNeeded()
-//            }
-//        }
-        
+        weak var drawerDelegate: DrawerViewControllerDelegate?
+        var initialY: CGFloat?
+    
         func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
             return 0.4
         }
-        
+
         func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-            let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) as! DrawerViewController
             let containerView = transitionContext.containerView
-            
+
             let animationDuration = transitionDuration(using: transitionContext)
-            
-            toViewController.view.transform = CGAffineTransform(translationX: containerView.bounds.width, y: 0)
-            toViewController.view.layer.shadowColor = UIColor.black.cgColor
-            toViewController.view.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-            toViewController.view.layer.shadowOpacity = 0.3
-            toViewController.view.layer.cornerRadius = 4.0
-            toViewController.view.clipsToBounds = true
-            
+
+            toViewController.view.frame.origin.y = containerView.bounds.height
             containerView.addSubview(toViewController.view)
-                    
+
             UIView.animate(withDuration: animationDuration, animations: {
-                toViewController.view.transform = CGAffineTransform.identity
+                toViewController.view.frame.origin.y = self.initialY ?? 0
+                self.drawerDelegate?.drawerViewController(toViewController, didScrollTopTo: toViewController.view.frame.origin.y)
                 }, completion: { finished in
                     transitionContext.completeTransition(finished)
             })
@@ -60,19 +38,21 @@ struct DrawerAnimatedTransitioning {
     }
     
     class Dismission: NSObject, UIViewControllerAnimatedTransitioning {
-        
+        weak var drawerDelegate: DrawerViewControllerDelegate?
+
         func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
             return 0.4
         }
         
         func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-            let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!
+            let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as! DrawerViewController
             let containerView = transitionContext.containerView
             
             let animationDuration = transitionDuration(using: transitionContext)
             
             UIView.animate(withDuration: animationDuration, animations: {
-                fromViewController.view.transform = CGAffineTransform(translationX: containerView.bounds.width, y: 0)
+                self.drawerDelegate?.drawerViewController(fromViewController, didScrollTopTo: fromViewController.view.frame.origin.y)
+                fromViewController.view.frame.origin.y = containerView.bounds.height
             }) { finished in
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             }

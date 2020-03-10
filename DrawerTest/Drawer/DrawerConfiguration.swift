@@ -6,11 +6,13 @@
 //  Copyright © 2020 Shortcut. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct DrawerConfiguration {
-    var snapPoints: [DrawerSnapPoint] = []
-    var defaultSnapPoint: DrawerSnapPoint?
+    var snapPoints: [DrawerSnapPoint] = [.middle, .dismiss]
+    var defaultSnapPoint: DrawerSnapPoint? = .middle
 
+    var drawerWidth: CGFloat?
+    
     var shouldAllowTouchPassthrough: Bool = false
 }

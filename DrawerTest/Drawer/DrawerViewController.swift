@@ -12,6 +12,7 @@ protocol DrawerViewControllerDelegate: class {
     func drawerViewController(_ viewController: DrawerViewController, didScrollTopTo yPoint: CGFloat)
     func drawerViewController(_ viewController: DrawerViewController, didSnapTo point: DrawerSnapPoint)
     
+    // not implemented yet
     func drawerViewControllerWillShow(_ viewController: DrawerViewController)
     func drawerViewControllerDidShow(_ viewController: DrawerViewController)
     func drawerViewControllerWillDismiss(_ viewController: DrawerViewController)
@@ -39,20 +40,17 @@ class DrawerViewController: UIViewController {
     
     weak var delegate: DrawerViewControllerDelegate?
     
-    /// Specifies whether touching outside of the drawer bounds should
-    /// forward touch events to the view controller in the background.
-    var shouldAllowTouchPassthrough: Bool = false
-
+    var configuration: DrawerConfiguration = DrawerConfiguration()
+    
     init(viewController: UIViewController? = nil,
          configuration: DrawerConfiguration = DrawerConfiguration()) {
         
         self.viewController = viewController
+        self.configuration = configuration
         
         // need to keep a reference to the delegate
         self.drawerTransitioningDelegate = DrawerTransitioningDelegate(configuration: configuration)
-        
-        shouldAllowTouchPassthrough = configuration.shouldAllowTouchPassthrough
-        
+            
         super.init(nibName: nil, bundle: nil)
         self.transitioningDelegate = drawerTransitioningDelegate
     }
