@@ -24,17 +24,21 @@ public struct DrawerConfiguration {
     var drawerWidth: CGFloat?
     var animationDuration: TimeInterval
     var shouldAllowTouchPassthrough: Bool
+    /// Whether to automatically dismiss the drawer when tapped outside of its bounds (in the passthrough area)
+    var shouldDismissOnOutsideTap: Bool
 
     public init(
         snapPoints: [DrawerSnapPoint] = [.middle, .dismiss],
         defaultSnapPoint: DrawerSnapPoint = .middle,
         drawerWidth: CGFloat? = nil,
         animationDuration: TimeInterval = 0.3,
-        shouldAllowTouchPassthrough: Bool = false) {
+        shouldAllowTouchPassthrough: Bool = false,
+        shouldDismissOnOutsideTap: Bool = true) {
         self.snapPoints = snapPoints
         self.defaultSnapPoint = defaultSnapPoint
         self.drawerWidth = drawerWidth
         self.animationDuration = animationDuration
         self.shouldAllowTouchPassthrough = shouldAllowTouchPassthrough
+        self.shouldDismissOnOutsideTap = shouldDismissOnOutsideTap
     }
 }
