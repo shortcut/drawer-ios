@@ -9,18 +9,16 @@
 import UIKit
 
 class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
-    let defaultSnapPoint: DrawerSnapPoint
-    let disabledSnapPoints: Set<DrawerSnapPoint>
+    var configuration: DrawerConfiguration = DrawerConfiguration()
+
+    var animationBlock: ((CGFloat) -> Void)?
 
     override init() {
-        self.defaultSnapPoint = .bottom
-        self.disabledSnapPoints = []
         super.init()
     }
 
-    init(snapPoint: DrawerSnapPoint, disabledSnapPoints: Set<DrawerSnapPoint> = []) {
-        self.defaultSnapPoint = snapPoint
-        self.disabledSnapPoints = disabledSnapPoints
+    init(configuration: DrawerConfiguration) {
+        self.configuration = configuration
         super.init()
     }
 
@@ -28,9 +26,36 @@ class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelega
         forPresented presented: UIViewController,
         presenting: UIViewController?,
         source: UIViewController) -> UIPresentationController? {
-        return DrawerPresentationController(presentedViewController: presented,
+        guard let drawerVC = presented as? DrawerViewController else {
+            return nil
+        }
+        return DrawerPresentationController(presentedViewController: drawerVC,
                                             presenting: presenting,
-                                            defaultSnapPoint: defaultSnapPoint,
-                                            disabledSnapPoints: disabledSnapPoints)
+                                            configuration: configuration)
+    }
+
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let drawerVC = dismissed as? DrawerViewController,
+            let delegate = drawerVC.delegate
+        else {
+            return nil
+        }
+
+        let dismiss = DrawerAnimatedTransitioning.Dismission()
+        dismiss.drawerDelegate = delegate
+        return dismiss
+    }
+
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let drawerVC = presented as? DrawerViewController,
+            let delegate = drawerVC.delegate
+        else {
+            return nil
+        }
+
+        let dismiss = DrawerAnimatedTransitioning.Presentation()
+        dismiss.initialY = drawerVC.configuration.defaultSnapPoint.topMargin(containerHeight: presenting.view.frame.size.height)
+        dismiss.drawerDelegate = delegate
+        return dismiss
     }
 }
