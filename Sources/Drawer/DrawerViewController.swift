@@ -17,7 +17,7 @@
 
 import UIKit
 
-protocol DrawerViewControllerDelegate: class {
+public protocol DrawerViewControllerDelegate: class {
     func drawerViewController(_ viewController: DrawerViewController, didScrollTopTo yPoint: CGFloat)
     func drawerViewController(_ viewController: DrawerViewController, didSnapTo point: DrawerSnapPoint)
 
@@ -28,7 +28,7 @@ protocol DrawerViewControllerDelegate: class {
     func drawerViewControllerDidDismiss(_ viewController: DrawerViewController)
 }
 
-class DrawerViewController: UIViewController {
+public class DrawerViewController: UIViewController {
     let dragIndicatorView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +37,7 @@ class DrawerViewController: UIViewController {
         return view
     }()
 
-    override var modalPresentationStyle: UIModalPresentationStyle {
+    override public var modalPresentationStyle: UIModalPresentationStyle {
         get {.custom }
         set { }
     }
@@ -50,12 +50,12 @@ class DrawerViewController: UIViewController {
         self.presentationController as? DrawerPresentationController
     }
     
-    weak var delegate: DrawerViewControllerDelegate?
+    public weak var delegate: DrawerViewControllerDelegate?
 
-    var configuration: DrawerConfiguration = DrawerConfiguration()
+    public private(set) var configuration: DrawerConfiguration = DrawerConfiguration()
 
-    init(viewController: UIViewController? = nil,
-         configuration: DrawerConfiguration = DrawerConfiguration()) {
+    public init(viewController: UIViewController? = nil,
+                configuration: DrawerConfiguration = DrawerConfiguration()) {
 
         self.viewController = viewController
         self.configuration = configuration
@@ -71,7 +71,7 @@ class DrawerViewController: UIViewController {
         super.init(coder: coder)
     }
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setup()
     }

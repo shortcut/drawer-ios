@@ -17,11 +17,24 @@
 
 import UIKit
 
-struct DrawerConfiguration {
-    var snapPoints: [DrawerSnapPoint] = [.middle, .dismiss]
-    var defaultSnapPoint: DrawerSnapPoint = .middle
+public struct DrawerConfiguration {
+    var snapPoints: [DrawerSnapPoint]
+    var defaultSnapPoint: DrawerSnapPoint
 
     var drawerWidth: CGFloat?
-    var animationDuration: TimeInterval = 0.3
-    var shouldAllowTouchPassthrough: Bool = false
+    var animationDuration: TimeInterval
+    var shouldAllowTouchPassthrough: Bool
+
+    public init(
+        snapPoints: [DrawerSnapPoint] = [.middle, .dismiss],
+        defaultSnapPoint: DrawerSnapPoint = .middle,
+        drawerWidth: CGFloat? = nil,
+        animationDuration: TimeInterval = 0.3,
+        shouldAllowTouchPassthrough: Bool = false) {
+        self.snapPoints = snapPoints
+        self.defaultSnapPoint = defaultSnapPoint
+        self.drawerWidth = drawerWidth
+        self.animationDuration = animationDuration
+        self.shouldAllowTouchPassthrough = shouldAllowTouchPassthrough
+    }
 }
