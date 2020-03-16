@@ -24,7 +24,8 @@ class ViewController: UIViewController {
                 .fixed(value: view.bounds.height - 100),
             ],
             defaultSnapPoint: .fraction(value: 0.6),
-            shouldAllowTouchPassthrough: true)
+            shouldAllowTouchPassthrough: true,
+            shouldDismissOnTap: false)
 
         let drawerVC = DrawerViewController(viewController: searchDrawerVC, configuration: config)
         drawerVC.delegate = self
