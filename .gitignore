@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/vim,xcode,macos,swift,sublimetext,swiftpackagemanager
-# Edit at https://www.gitignore.io/?templates=vim,xcode,macos,swift,sublimetext,swiftpackagemanager
+# Created by https://www.gitignore.io/api/vim,xcode,macos,swift,sublimetext
+# Edit at https://www.gitignore.io/?templates=vim,xcode,macos,swift,sublimetext
 
 ### macOS ###
 # General
@@ -140,12 +140,6 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
-
-### SwiftPackageManager ###
-Packages
-xcuserdata
-*.xcodeproj
-
 
 ### Vim ###
 # Swap
