@@ -25,7 +25,7 @@ class ViewController: UIViewController {
             ],
             defaultSnapPoint: .fraction(value: 0.6),
             shouldAllowTouchPassthrough: true,
-            shouldDismissOnTap: false)
+            shouldDismissOnOutsideTap: false)
 
         let drawerVC = DrawerViewController(viewController: searchDrawerVC, configuration: config)
         drawerVC.delegate = self
@@ -42,7 +42,6 @@ extension ViewController: DrawerViewControllerDelegate {
     }
 
     func drawerViewControllerWillShow(_ viewController: DrawerViewController) {
-        searchDrawerVC.resignSearchFocus()
     }
 
     func drawerViewControllerDidShow(_ viewController: DrawerViewController) {

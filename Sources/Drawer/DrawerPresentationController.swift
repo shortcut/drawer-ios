@@ -244,7 +244,7 @@ class DrawerPresentationController: UIPresentationController {
     }
 
     func setupDrawerDismissalTapRecogniser() {
-        guard configuration.shouldDismissOnTap else { return }
+        guard configuration.shouldDismissOnOutsideTap else { return }
         guard drawerDismissalTapGR == nil else { return }
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(handleDrawerDismissalTap))
