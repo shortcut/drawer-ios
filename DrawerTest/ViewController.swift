@@ -140,11 +140,9 @@ class ViewController: UIViewController {
 extension ViewController: DrawerViewControllerDelegate {
     func drawerViewController(_ viewController: DrawerViewController, didScrollTopTo yPoint: CGFloat) {
         trackingView.frame.origin.y = yPoint - 120
-        print(yPoint)
     }
     
     func drawerViewController(_ viewController: DrawerViewController, didSnapTo point: DrawerSnapPoint) {
-        print(point)
     }
     
     // not implemented yet
