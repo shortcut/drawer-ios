@@ -10,9 +10,9 @@ import UIKit
 
 struct DrawerConfiguration {
     var snapPoints: [DrawerSnapPoint] = [.middle, .dismiss]
-    var defaultSnapPoint: DrawerSnapPoint? = .middle
+    var defaultSnapPoint: DrawerSnapPoint = .middle
 
     var drawerWidth: CGFloat?
-    
+    var animationDuration: TimeInterval = 0.3
     var shouldAllowTouchPassthrough: Bool = false
 }

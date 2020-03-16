@@ -11,12 +11,12 @@ import UIKit
 class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
     var configuration: DrawerConfiguration = DrawerConfiguration()
 
-    var animationBlock: ((CGFloat) -> ())?
-    
+    var animationBlock: ((CGFloat) -> Void)?
+
     override init() {
         super.init()
     }
-    
+
     init(configuration: DrawerConfiguration) {
         self.configuration = configuration
         super.init()
@@ -31,10 +31,9 @@ class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelega
         }
         return DrawerPresentationController(presentedViewController: drawerVC,
                                             presenting: presenting,
-                                            snapPoints: configuration.snapPoints,
-                                            defaultSnapPoint: configuration.defaultSnapPoint)
+                                            configuration: configuration)
     }
-    
+
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let drawerVC = dismissed as? DrawerViewController,
             let delegate = drawerVC.delegate
@@ -46,20 +45,16 @@ class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelega
         dismiss.drawerDelegate = delegate
         return dismiss
     }
-    
-//    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-//        return DrawerAnimatedTransitioning.Presentation()
-//    }
-    
+
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let drawerVC = presented as? DrawerViewController,
-        let delegate = drawerVC.delegate
-            else {
+            let delegate = drawerVC.delegate
+        else {
             return nil
         }
 
         let dismiss = DrawerAnimatedTransitioning.Presentation()
-        dismiss.initialY = drawerVC.configuration.defaultSnapPoint?.topMargin(containerHeight: presenting.view.frame.size.height)
+        dismiss.initialY = drawerVC.configuration.defaultSnapPoint.topMargin(containerHeight: presenting.view.frame.size.height)
         dismiss.drawerDelegate = delegate
         return dismiss
     }

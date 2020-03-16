@@ -11,7 +11,7 @@ import UIKit
 protocol DrawerViewControllerDelegate: class {
     func drawerViewController(_ viewController: DrawerViewController, didScrollTopTo yPoint: CGFloat)
     func drawerViewController(_ viewController: DrawerViewController, didSnapTo point: DrawerSnapPoint)
-    
+
     // not implemented yet
     func drawerViewControllerWillShow(_ viewController: DrawerViewController)
     func drawerViewControllerDidShow(_ viewController: DrawerViewController)
@@ -27,30 +27,33 @@ class DrawerViewController: UIViewController {
         view.layer.cornerRadius = 3
         return view
     }()
-    
+
     override var modalPresentationStyle: UIModalPresentationStyle {
         get {.custom }
         set { }
     }
-    
+
     /// The view controller to be presented inside the drawer.
     private(set) var viewController: UIViewController?
 
     var drawerTransitioningDelegate: DrawerTransitioningDelegate?
+    var drawerPresentationController: DrawerPresentationController? {
+        self.presentationController as? DrawerPresentationController
+    }
     
     weak var delegate: DrawerViewControllerDelegate?
-    
+
     var configuration: DrawerConfiguration = DrawerConfiguration()
-    
+
     init(viewController: UIViewController? = nil,
          configuration: DrawerConfiguration = DrawerConfiguration()) {
-        
+
         self.viewController = viewController
         self.configuration = configuration
-        
+
         // need to keep a reference to the delegate
         self.drawerTransitioningDelegate = DrawerTransitioningDelegate(configuration: configuration)
-            
+
         super.init(nibName: nil, bundle: nil)
         self.transitioningDelegate = drawerTransitioningDelegate
     }
@@ -63,7 +66,15 @@ class DrawerViewController: UIViewController {
         super.viewDidLoad()
         setup()
     }
-
+    
+    public func moveToDrawerSnapPoint(_ snapPoint: DrawerSnapPoint, animated: Bool = true) {
+        guard configuration.snapPoints.contains(snapPoint) else {
+            return
+        }
+        
+        drawerPresentationController?.moveToDrawerSnapPoint(snapPoint, animated: animated)
+    }
+    
     private func setup() {
         view.clipsToBounds = true
         view.backgroundColor = .clear
@@ -76,7 +87,7 @@ class DrawerViewController: UIViewController {
             dragIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             dragIndicatorView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.1),
             dragIndicatorView.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
-            dragIndicatorView.heightAnchor.constraint(equalToConstant: 5),
+            dragIndicatorView.heightAnchor.constraint(equalToConstant: 5)
         ])
 
         if let viewController = self.viewController {
@@ -102,7 +113,7 @@ class DrawerViewController: UIViewController {
             viewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             viewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             viewController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            viewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            viewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
         view.bringSubviewToFront(dragIndicatorView)

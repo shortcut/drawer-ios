@@ -9,8 +9,7 @@
 import UIKit
 
 class DrawerPresentationController: UIPresentationController {
-    let defaultSnapPoint: DrawerSnapPoint
-    let snapPoints: [DrawerSnapPoint]
+    let configuration: DrawerConfiguration
     var currentSnapPoint: DrawerSnapPoint
 
     var drawerDismissalTapGR: UITapGestureRecognizer?
@@ -21,24 +20,22 @@ class DrawerPresentationController: UIPresentationController {
         set { presentedView?.frame.origin.y = newValue }
         get { presentedView?.frame.origin.y ?? CGFloat.greatestFiniteMagnitude }
     }
-    
+
     var scrollView: UIScrollView?
     var currentAnimator: UIViewPropertyAnimator?
-    
+
     var drawerViewController: DrawerViewController
     var drawerDelegate: DrawerViewControllerDelegate? { drawerViewController.delegate }
-    
+
     /// Whether we are locked to dragging a drawer
     var isDragging: Bool = false
 
     init(presentedViewController: DrawerViewController,
          presenting presentingViewController: UIViewController?,
-         snapPoints: [DrawerSnapPoint],
-         defaultSnapPoint: DrawerSnapPoint? = nil) {
+         configuration: DrawerConfiguration) {
         self.drawerViewController = presentedViewController
-        self.snapPoints = snapPoints
-        self.defaultSnapPoint = defaultSnapPoint ?? snapPoints.first ?? .middle
-        self.currentSnapPoint = self.defaultSnapPoint
+        self.configuration = configuration
+        self.currentSnapPoint = configuration.defaultSnapPoint
 
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
 
@@ -59,7 +56,11 @@ class DrawerPresentationController: UIPresentationController {
         }
 
         presentedView.frame = containerView.bounds
-        drawerY = defaultSnapPoint.topMargin(containerHeight: containerView.bounds.height)
+        if let width = configuration.drawerWidth {
+            presentedView.frame.size.width = width
+        }
+        drawerY = configuration.defaultSnapPoint
+            .topMargin(containerHeight: containerView.bounds.height)
     }
 
     func adjustScrollViewContentOffset() {
@@ -145,7 +146,7 @@ class DrawerPresentationController: UIPresentationController {
                     //  b) vertically lower (when flicking down)
                     // than the current position
                     let presentedViewMinY = presentedView.frame.minY
-                    let snapLocations = snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
+                    let snapLocations = configuration.snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
                     let snapDistances = snapLocations
                         .enumerated()
                         .sorted { (a, b) -> Bool in
@@ -165,42 +166,24 @@ class DrawerPresentationController: UIPresentationController {
                     }()
 
                     if let snapIndex = maybeSnapIndex {
-                        snapPoint = snapPoints[snapIndex]
+                        snapPoint = configuration.snapPoints[snapIndex]
                     } else {
                         snapPoint = currentSnapPoint
                     }
                 } else {
                     // find the closest snap point to the current position
                     let presentedViewMinY = presentedView.frame.minY
-                    let snapLocations = snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
+                    let snapLocations = configuration.snapPoints.map { $0.topMargin(containerHeight: containerView.bounds.height) }
                     let snapDistances = snapLocations.map { abs($0 - presentedViewMinY) }
                         .enumerated()
                         .sorted { (a, b) -> Bool in
                             a.element < b.element
                     }
                     let snapIndex = snapDistances.first?.offset ?? 0
-                    snapPoint = snapPoints[snapIndex]
+                    snapPoint = configuration.snapPoints[snapIndex]
                 }
 
-                let snapTargetY = snapPoint.topMargin(containerHeight: containerView.bounds.height)
-
-                self.currentSnapPoint = snapPoint
-
-                currentAnimator?.stopAnimation(true)
-                currentAnimator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.8) {
-                    self.drawerDelegate?.drawerViewController(self.drawerViewController,
-                                                              didScrollTopTo: snapTargetY)
-                    self.drawerY = snapTargetY
-                    containerView.layoutIfNeeded()
-                }
-                currentAnimator?.addCompletion { _ in
-                    self.drawerDelegate?.drawerViewController(self.drawerViewController,
-                                                              didSnapTo: self.currentSnapPoint)
-                    if case .dismiss = snapPoint {
-                        self.presentedViewController.dismiss(animated: false, completion: nil)
-                    }
-                }
-                currentAnimator?.startAnimation()
+                moveToDrawerSnapPoint(snapPoint, animated: true)
             }
 
         case .cancelled, .failed, .possible:
@@ -216,7 +199,7 @@ class DrawerPresentationController: UIPresentationController {
             return .zero
         }
         let containerRect = containerView.bounds
-        let height = defaultSnapPoint.drawerHeight(containerHeight: containerRect.height)
+        let height = configuration.defaultSnapPoint.drawerHeight(containerHeight: containerRect.height)
         return CGRect(x: 0, y: containerRect.maxY - height,
                       width: containerRect.width, height: height)
     }
@@ -236,10 +219,10 @@ class DrawerPresentationController: UIPresentationController {
         if drawerViewController?.configuration.shouldAllowTouchPassthrough ?? false {
             touchForwardingView.passthroughViews = [presentingViewController.view]
         }
-        
+
         setupDrawerDismissalTapRecogniser()
     }
-    
+
     override func dismissalTransitionWillBegin() {
         guard let coordinator = presentedViewController.transitionCoordinator else {
           return
@@ -249,7 +232,7 @@ class DrawerPresentationController: UIPresentationController {
             self.drawerDelegate?.drawerViewController(self.drawerViewController, didScrollTopTo: self.drawerY)
         })
     }
-    
+
     func setupDrawerDismissalTapRecogniser() {
         guard drawerDismissalTapGR == nil else { return }
         let tapGesture = UITapGestureRecognizer(target: self,
@@ -265,7 +248,36 @@ class DrawerPresentationController: UIPresentationController {
     }
 
     @objc func handleDrawerDismissalTap() {
+        self.drawerDelegate?.drawerViewControllerWillDismiss(self.drawerViewController)
         self.presentedViewController.dismiss(animated: true, completion: nil)
+        self.drawerDelegate?.drawerViewControllerDidDismiss(self.drawerViewController)
+    }
+    
+    public func moveToDrawerSnapPoint(_ snapPoint: DrawerSnapPoint, animated: Bool) {
+        guard let containerView = containerView else {
+                return
+        }
+        
+        self.currentSnapPoint = snapPoint
+        let snapTargetY = snapPoint.topMargin(containerHeight: containerView.bounds.height)
+
+        currentAnimator?.stopAnimation(true)
+        currentAnimator = UIViewPropertyAnimator(duration: configuration.animationDuration, dampingRatio: 0.8) {
+            self.drawerDelegate?.drawerViewController(self.drawerViewController,
+                                                      didScrollTopTo: snapTargetY)
+            self.drawerY = snapTargetY
+            containerView.layoutIfNeeded()
+        }
+        currentAnimator?.addCompletion { _ in
+            self.drawerDelegate?.drawerViewController(self.drawerViewController,
+                                                      didSnapTo: self.currentSnapPoint)
+            if case .dismiss = snapPoint {
+                self.drawerDelegate?.drawerViewControllerWillDismiss(self.drawerViewController)
+                self.presentedViewController.dismiss(animated: false, completion: nil)
+                self.drawerDelegate?.drawerViewControllerDidDismiss(self.drawerViewController)
+            }
+        }
+        currentAnimator?.startAnimation()
     }
 }
 
@@ -277,7 +289,7 @@ extension DrawerPresentationController: UIGestureRecognizerDelegate {
         }
         return false
     }
-    
+
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if gestureRecognizer is UITapGestureRecognizer,
            let view = gestureRecognizer.view,
