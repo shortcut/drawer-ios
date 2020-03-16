@@ -9,16 +9,16 @@
 import UIKit
 
 class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
-    var snapPoints: [DrawerSnapPoint] = []
-    var defaultSnapPoint: DrawerSnapPoint?
+    var configuration: DrawerConfiguration = DrawerConfiguration()
+
+    var animationBlock: ((CGFloat) -> Void)?
 
     override init() {
         super.init()
     }
 
-    init(snapPoints: [DrawerSnapPoint], defaultSnapPoint: DrawerSnapPoint? = nil) {
-        self.snapPoints = snapPoints
-        self.defaultSnapPoint = defaultSnapPoint
+    init(configuration: DrawerConfiguration) {
+        self.configuration = configuration
         super.init()
     }
 
@@ -31,7 +31,31 @@ class DrawerTransitioningDelegate: NSObject, UIViewControllerTransitioningDelega
         }
         return DrawerPresentationController(presentedViewController: drawerVC,
                                             presenting: presenting,
-                                            snapPoints: snapPoints,
-                                            defaultSnapPoint: defaultSnapPoint)
+                                            configuration: configuration)
+    }
+
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let drawerVC = dismissed as? DrawerViewController,
+            let delegate = drawerVC.delegate
+        else {
+            return nil
+        }
+
+        let dismiss = DrawerAnimatedTransitioning.Dismission()
+        dismiss.drawerDelegate = delegate
+        return dismiss
+    }
+
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let drawerVC = presented as? DrawerViewController,
+            let delegate = drawerVC.delegate
+        else {
+            return nil
+        }
+
+        let dismiss = DrawerAnimatedTransitioning.Presentation()
+        dismiss.initialY = drawerVC.configuration.defaultSnapPoint.topMargin(containerHeight: presenting.view.frame.size.height)
+        dismiss.drawerDelegate = delegate
+        return dismiss
     }
 }

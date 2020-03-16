@@ -32,6 +32,12 @@ class ViewController: UIViewController {
     button.setTitle("Drawer with Scroll View inside", for: .normal)
     return button
   }()
+ 
+    let trackingView: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        view.backgroundColor = .red
+        return view
+    }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -60,13 +66,21 @@ class ViewController: UIViewController {
     drawerWithStaticView.addTarget(self, action: #selector(makeDrawerWithStaticView), for: .touchUpInside)
     drawerWithNavBar.addTarget(self, action: #selector(makeDrawerWithNavBar), for: .touchUpInside)
     drawerWithScrollView.addTarget(self, action: #selector(makeDrawerWithScrollView), for: .touchUpInside)
+    
+    trackingView.frame.origin.y = self.view.frame.size.height - 120
+    self.view.addSubview(trackingView)
   }
 
   @objc func makeDrawerWithStaticView() {
-    let drawerVC = DrawerViewController(viewController: StaticViewController())
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoints: [.top, .dismiss])
-    drawerVC.modalPresentationStyle = .custom
-    drawerVC.transitioningDelegate = drawerTransitioningDelegate
+    let config = DrawerConfiguration(snapPoints: [.top,
+                                                  .fraction(value: 0.7),
+                                                  .fraction(value: 0.2),
+                                                  .dismiss],
+                                     defaultSnapPoint: .fraction(value: 0.7), shouldAllowTouchPassthrough: true)
+    
+    let drawerVC = DrawerViewController(viewController: StaticViewController(),
+                                        configuration: config)
+    drawerVC.delegate = self
     present(drawerVC, animated: true)
   }
 
@@ -81,11 +95,14 @@ class ViewController: UIViewController {
     
     let navigationVC = UINavigationController(rootViewController: t1)
     navigationVC.pushViewController(t2, animated: false)
+    let config = DrawerConfiguration(snapPoints: [.top,
+                                                  .fraction(value: 0.7),
+                                                  .fraction(value: 0.2),
+                                                  .dismiss],
+                                     defaultSnapPoint: .fraction(value: 0.7), shouldAllowTouchPassthrough: true)
+    
 
-    let drawerVC = DrawerViewController(viewController: navigationVC)
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoints: [.top, .middle, .dismiss])
-    drawerVC.modalPresentationStyle = .custom
-    drawerVC.transitioningDelegate = drawerTransitioningDelegate
+    let drawerVC = DrawerViewController(viewController: navigationVC, configuration: config)
     present(drawerVC, animated: true)
   }
 
@@ -99,10 +116,42 @@ class ViewController: UIViewController {
     let navigationVC = UINavigationController(rootViewController: t1)
     navigationVC.pushViewController(t2, animated: false)
 
-    let drawerVC = DrawerViewController(viewController: navigationVC)
-    let drawerTransitioningDelegate = DrawerTransitioningDelegate(snapPoints: [.top, .middle, .bottom])
-    drawerVC.modalPresentationStyle = .custom
-    drawerVC.transitioningDelegate = drawerTransitioningDelegate
+    let config = DrawerConfiguration(snapPoints: [.top,
+                                                  .fraction(value: 0.7),
+                                                  .fraction(value: 0.2),
+                                                  .dismiss],
+                                     defaultSnapPoint: .fraction(value: 0.7), shouldAllowTouchPassthrough: true)
+
+    let drawerVC = DrawerViewController(viewController: navigationVC, configuration: config)
+    drawerVC.delegate = self
     present(drawerVC, animated: true)
   }
+}
+
+extension ViewController: DrawerViewControllerDelegate {
+    func drawerViewController(_ viewController: DrawerViewController, didScrollTopTo yPoint: CGFloat) {
+        trackingView.frame.origin.y = yPoint - 120
+        print(yPoint)
+    }
+    
+    func drawerViewController(_ viewController: DrawerViewController, didSnapTo point: DrawerSnapPoint) {
+        print(point)
+    }
+    
+    // not implemented yet
+    func drawerViewControllerWillShow(_ viewController: DrawerViewController) {
+        
+    }
+    
+    func drawerViewControllerDidShow(_ viewController: DrawerViewController) {
+        
+    }
+    
+    func drawerViewControllerWillDismiss(_ viewController: DrawerViewController) {
+        
+    }
+    
+    func drawerViewControllerDidDismiss(_ viewController: DrawerViewController) {
+        
+    }
 }

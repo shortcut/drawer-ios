@@ -45,4 +45,3 @@ enum DrawerSnapPoint: Equatable {
         height - topMargin(containerHeight: height)
     }
 }
-
