@@ -3,31 +3,22 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		29161AC22359D8C600B2C564 /* DrawerSnapPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29161AC12359D8C600B2C564 /* DrawerSnapPoint.swift */; };
-		656D4D872416FC220079233B /* DrawerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D4D862416FC220079233B /* DrawerConfiguration.swift */; };
 		656D4D882417AA360079233B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165812355A8FD006D5B51 /* ViewController.swift */; };
-		656D4D8A2417C5380079233B /* DrawerAnimatedTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D4D892417C5380079233B /* DrawerAnimatedTransitioning.swift */; };
 		9201657E2355A8FD006D5B51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9201657D2355A8FD006D5B51 /* AppDelegate.swift */; };
 		920165852355A8FD006D5B51 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 920165832355A8FD006D5B51 /* Main.storyboard */; };
 		920165872355A900006D5B51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 920165862355A900006D5B51 /* Assets.xcassets */; };
 		9201658A2355A900006D5B51 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 920165882355A900006D5B51 /* LaunchScreen.storyboard */; };
-		920165932355CC59006D5B51 /* DrawerPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165922355CC59006D5B51 /* DrawerPresentationController.swift */; };
-		920165952355CC6B006D5B51 /* DrawerTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */; };
-		920165972355CC7D006D5B51 /* DrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165962355CC7D006D5B51 /* DrawerViewController.swift */; };
 		920165992355F811006D5B51 /* SquareSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920165982355F811006D5B51 /* SquareSegmentedControl.swift */; };
 		921E2206236C2BED00B1C1FA /* StaticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921E2204236C2BED00B1C1FA /* StaticViewController.swift */; };
 		921E2207236C2BED00B1C1FA /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921E2205236C2BED00B1C1FA /* TableViewController.swift */; };
-		9222AE252359B14B00051F06 /* PSPDFTouchForwardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */; };
+		92CC2BA3241FAB560016E443 /* Drawer in Frameworks */ = {isa = PBXBuildFile; productRef = 92CC2BA2241FAB560016E443 /* Drawer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		29161AC12359D8C600B2C564 /* DrawerSnapPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerSnapPoint.swift; sourceTree = "<group>"; };
-		656D4D862416FC220079233B /* DrawerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerConfiguration.swift; sourceTree = "<group>"; };
-		656D4D892417C5380079233B /* DrawerAnimatedTransitioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerAnimatedTransitioning.swift; sourceTree = "<group>"; };
 		9201657A2355A8FD006D5B51 /* DrawerTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawerTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9201657D2355A8FD006D5B51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		920165812355A8FD006D5B51 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,13 +26,10 @@
 		920165862355A900006D5B51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		920165892355A900006D5B51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9201658B2355A900006D5B51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		920165922355CC59006D5B51 /* DrawerPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerPresentationController.swift; sourceTree = "<group>"; };
-		920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerTransitioningDelegate.swift; sourceTree = "<group>"; };
-		920165962355CC7D006D5B51 /* DrawerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerViewController.swift; sourceTree = "<group>"; };
 		920165982355F811006D5B51 /* SquareSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareSegmentedControl.swift; sourceTree = "<group>"; };
 		921E2204236C2BED00B1C1FA /* StaticViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticViewController.swift; sourceTree = "<group>"; };
 		921E2205236C2BED00B1C1FA /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSPDFTouchForwardingView.swift; sourceTree = "<group>"; };
+		92FEDEB5241FAA7A00E27822 /* Drawer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Drawer; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92CC2BA3241FAB560016E443 /* Drawer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +49,8 @@
 			children = (
 				9201657C2355A8FD006D5B51 /* DrawerTest */,
 				9201657B2355A8FD006D5B51 /* Products */,
+				92FEDEB5241FAA7A00E27822 /* Drawer */,
+				92CC2BA1241FAB560016E443 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,7 +67,6 @@
 			children = (
 				9201657D2355A8FD006D5B51 /* AppDelegate.swift */,
 				920165862355A900006D5B51 /* Assets.xcassets */,
-				920165912355CC4B006D5B51 /* Drawer */,
 				9201658B2355A900006D5B51 /* Info.plist */,
 				920165882355A900006D5B51 /* LaunchScreen.storyboard */,
 				920165832355A8FD006D5B51 /* Main.storyboard */,
@@ -88,18 +78,11 @@
 			path = DrawerTest;
 			sourceTree = "<group>";
 		};
-		920165912355CC4B006D5B51 /* Drawer */ = {
+		92CC2BA1241FAB560016E443 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				656D4D862416FC220079233B /* DrawerConfiguration.swift */,
-				920165922355CC59006D5B51 /* DrawerPresentationController.swift */,
-				29161AC12359D8C600B2C564 /* DrawerSnapPoint.swift */,
-				920165942355CC6B006D5B51 /* DrawerTransitioningDelegate.swift */,
-				920165962355CC7D006D5B51 /* DrawerViewController.swift */,
-				9222AE242359B14B00051F06 /* PSPDFTouchForwardingView.swift */,
-				656D4D892417C5380079233B /* DrawerAnimatedTransitioning.swift */,
 			);
-			path = Drawer;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,6 +101,9 @@
 			dependencies = (
 			);
 			name = DrawerTest;
+			packageProductDependencies = (
+				92CC2BA2241FAB560016E443 /* Drawer */,
+			);
 			productName = DrawerTest;
 			productReference = 9201657A2355A8FD006D5B51 /* DrawerTest.app */;
 			productType = "com.apple.product-type.application";
@@ -173,18 +159,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				920165952355CC6B006D5B51 /* DrawerTransitioningDelegate.swift in Sources */,
 				9201657E2355A8FD006D5B51 /* AppDelegate.swift in Sources */,
 				921E2207236C2BED00B1C1FA /* TableViewController.swift in Sources */,
-				656D4D8A2417C5380079233B /* DrawerAnimatedTransitioning.swift in Sources */,
-				920165932355CC59006D5B51 /* DrawerPresentationController.swift in Sources */,
 				656D4D882417AA360079233B /* ViewController.swift in Sources */,
 				921E2206236C2BED00B1C1FA /* StaticViewController.swift in Sources */,
-				656D4D872416FC220079233B /* DrawerConfiguration.swift in Sources */,
 				920165992355F811006D5B51 /* SquareSegmentedControl.swift in Sources */,
-				920165972355CC7D006D5B51 /* DrawerViewController.swift in Sources */,
-				9222AE252359B14B00051F06 /* PSPDFTouchForwardingView.swift in Sources */,
-				29161AC22359D8C600B2C564 /* DrawerSnapPoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,6 +363,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		92CC2BA2241FAB560016E443 /* Drawer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Drawer;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 920165722355A8FD006D5B51 /* Project object */;
 }

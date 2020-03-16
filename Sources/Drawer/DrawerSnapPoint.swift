@@ -17,7 +17,7 @@
 
 import UIKit
 
-enum DrawerSnapPoint: Equatable {
+public enum DrawerSnapPoint: Equatable {
     case top
     case middle
     case bottom
