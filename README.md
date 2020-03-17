@@ -15,7 +15,7 @@ Works on iOS 11+
 	```swift
 	.package(url: "https://github.com/shortcut/drawer-ios.git", .upToNextMajor(from: "1.0")),
 	```
-2. Next, add `MBProgressHUD` to your App targets dependencies like so:
+2. Next, add `Drawer` to your App targets dependencies like so:
 	```swift
 	.target(name: "App", dependencies: ["Drawer"]),
 	```
